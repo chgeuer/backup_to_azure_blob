@@ -56,7 +56,7 @@ class AzureVMInstanceMetadata:
 
     @staticmethod
     def create_instance():
-        # return AzureVMInstanceMetadata(lambda: (json.JSONDecoder()).decode(AzureVMInstanceMetadata.test_data()))
+        return AzureVMInstanceMetadata(lambda: (json.JSONDecoder()).decode(AzureVMInstanceMetadata.test_data()))
         return AzureVMInstanceMetadata(lambda: AzureVMInstanceMetadata.request_metadata())
 
     def __init__(self, req):
@@ -134,7 +134,7 @@ def backup(args):
 def restore(args):
     storage_client, container_name = client_and_container()
     blob_name = args.restore
-    printe("Backup to {}".format(storage_client.make_blob_url(container_name, blob_name)))
+    printe("Restore from {}".format(storage_client.make_blob_url(container_name, blob_name)))
 
     storage_client.get_blob_to_stream(container_name=container_name, blob_name=blob_name, stream=sys.stdout)
 
