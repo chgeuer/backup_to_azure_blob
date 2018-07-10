@@ -35,7 +35,7 @@ class AzureVMInstanceMetadata:
     def request_metadata(api_version="2017-12-01"):
         url="http://169.254.169.254/metadata/instance?api-version={v}".format(v=api_version)
         try:
-            return urllib2.urlopen(urllib2.Request(url, None, {'metadata': 'true'})).read().json()
+            return json.loads(urllib2.urlopen(urllib2.Request(url, None, {'metadata': 'true'})).read())
         except Exception as e:
             raise(BackupException("Failed to connect to Azure instance metadata endpoint {}:\n{}".format(url, e.message)))
 
