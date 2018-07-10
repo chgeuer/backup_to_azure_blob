@@ -101,7 +101,8 @@ def restore(args):
 
     storage_client.get_blob_to_stream(
         container_name=container_name, 
-        blob_name=blob_name, stream=sys.stdout)
+        blob_name=blob_name, stream=sys.stdout,
+        max_connections=1)
 
 def list_backups(args):
     storage_client, container_name = client_and_container()
