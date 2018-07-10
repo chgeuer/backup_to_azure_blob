@@ -4,18 +4,10 @@
 #
 
 from __future__ import print_function
-import logging
-import tempfile
-import time
 import sys
-import uuid
-import datetime
 import requests
 import json
-import subprocess
 import argparse
-import re
-import threading
 import os
 import os.path
 from azure.storage.blob import BlockBlobService
@@ -56,7 +48,7 @@ class AzureVMInstanceMetadata:
 
     @staticmethod
     def create_instance():
-        return AzureVMInstanceMetadata(lambda: (json.JSONDecoder()).decode(AzureVMInstanceMetadata.test_data()))
+        #return AzureVMInstanceMetadata(lambda: (json.JSONDecoder()).decode(AzureVMInstanceMetadata.test_data()))
         return AzureVMInstanceMetadata(lambda: AzureVMInstanceMetadata.request_metadata())
 
     def __init__(self, req):
