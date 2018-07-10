@@ -84,25 +84,31 @@ def client_and_container():
 def backup(args):
     storage_client, container_name = client_and_container()
     blob_name = args.backup
-    printe("Backup to {}".format(storage_client.make_blob_url(container_name, blob_name)))
+    # printe("Backup to {}".format(storage_client.make_blob_url(container_name, blob_name)))
 
-    if not storage_client.exists(container_name=container_name):
-        storage_client.create_container(container_name=container_name)
+    try:
+        if not storage_client.exists(container_name=container_name):
+            storage_client.create_container(container_name=container_name)
 
-    storage_client.create_blob_from_stream(
-        container_name=container_name,
-        blob_name=blob_name, stream=sys.stdin,
-        use_byte_buffer=True, max_connections=1)
+        storage_client.create_blob_from_stream(
+            container_name=container_name,
+            blob_name=blob_name, stream=sys.stdin,
+            use_byte_buffer=True, max_connections=1)
+    except Exception as e:
+        raise BackupException(e.message)
 
 def restore(args):
     storage_client, container_name = client_and_container()
     blob_name = args.restore
-    printe("Restore from {}".format(storage_client.make_blob_url(container_name, blob_name)))
+    # printe("Restore from {}".format(storage_client.make_blob_url(container_name, blob_name)))
 
-    storage_client.get_blob_to_stream(
-        container_name=container_name, 
-        blob_name=blob_name, stream=sys.stdout,
-        max_connections=1)
+    try:
+        storage_client.get_blob_to_stream(
+            container_name=container_name, 
+            blob_name=blob_name, stream=sys.stdout,
+            max_connections=1)
+    except Exception as e:
+        raise BackupException(e.message)
 
 def list_backups(args):
     storage_client, container_name = client_and_container()
