@@ -50,13 +50,13 @@ class AzureVMInstanceMetadata:
 
     @staticmethod
     def test_data():
-        return '{{ "compute": {{ "name":"vm3728739", "tags":"azure_storage_account_name:{};azure_storage_account_key:{};fs_backup_interval_min:24h;fs_backup_interval_max:3d" }} }}'.format(
+        return '{{ "compute": {{ "name":"vm3728739", "tags":"storage_account_name:{};storage_account_key:{};fs_backup_interval_min:24h;fs_backup_interval_max:3d" }} }}'.format(
             os.environ["SAMPLE_STORAGE_ACCOUNT_NAME"],os.environ["SAMPLE_STORAGE_ACCOUNT_KEY"]
         )
 
     @staticmethod
     def create_instance():
-        # return AzureVMInstanceMetadata(lambda: (json.JSONDecoder()).decode(AzureVMInstanceMetadata.test_data()))
+        return AzureVMInstanceMetadata(lambda: (json.JSONDecoder()).decode(AzureVMInstanceMetadata.test_data()))
         return AzureVMInstanceMetadata(lambda: AzureVMInstanceMetadata.request_metadata())
 
     def __init__(self, req):
@@ -84,8 +84,8 @@ class AzureVMInstanceMetadata:
 
 def client_and_container():
     config = AzureVMInstanceMetadata.create_instance()
-    account_name=config.get_tags()["azure_storage_account_name"]
-    account_key=config.get_tags()["azure_storage_account_key"]
+    account_name=config.get_tags()["storage_account_name"]
+    account_key=config.get_tags()["storage_account_key"]
     storage_client = BlockBlobService(account_name=account_name, account_key=account_key)
     container_name = "backup"
     return storage_client, container_name
