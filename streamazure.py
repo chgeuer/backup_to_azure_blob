@@ -5,8 +5,8 @@
 
 from __future__ import print_function
 import sys
-import requests
 import json
+import urllib2
 import argparse
 import os
 import os.path
@@ -35,8 +35,7 @@ class AzureVMInstanceMetadata:
     def request_metadata(api_version="2017-12-01"):
         url="http://169.254.169.254/metadata/instance?api-version={v}".format(v=api_version)
         try:
-            response = requests.get(url=url, headers={"Metadata": "true"})
-            return response.json()
+            return urllib2.urlopen(urllib2.Request(url, None, {'metadata': 'true'})).read().json()
         except Exception as e:
             raise(BackupException("Failed to connect to Azure instance metadata endpoint {}:\n{}".format(url, e.message)))
 
